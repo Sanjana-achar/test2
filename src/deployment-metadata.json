@@ -1,0 +1,140 @@
+{
+    "version": 1,
+    "samplesPerInference": 300,
+    "axesCount": 3,
+    "classes": [
+        "ADL",
+        "FALL"
+    ],
+    "deployCounter": 13,
+    "folders": {
+        "input": "/home/input",
+        "output": "/home/output"
+    },
+    "frequency": 100,
+    "impulse": {
+        "inputBlocks": [
+            {
+                "id": 31,
+                "type": "time-series",
+                "name": "Time series",
+                "title": "Time series data",
+                "padZeros": true,
+                "windowSizeMs": 3000,
+                "windowIncreaseMs": 300,
+                "frequencyHz": 100,
+                "createdBy": "createImpulse",
+                "createdAt": "2024-10-21T17:40:21.874Z"
+            }
+        ],
+        "dspBlocks": [
+            {
+                "id": 32,
+                "type": "syntiant-imu",
+                "name": "Syntiant IMU",
+                "axes": [
+                    "accX",
+                    "accY",
+                    "accZ"
+                ],
+                "title": "IMU (Syntiant)",
+                "input": 31,
+                "implementationVersion": 1,
+                "createdBy": "createImpulse",
+                "createdAt": "2024-10-21T17:40:21.874Z",
+                "metadata": {
+                    "created": "2024-10-21T17:46:02.868Z",
+                    "dspConfig": {
+                        "options": {
+                            "scaling": true,
+                            "scaling_raw": false,
+                            "padding": true
+                        },
+                        "calculateFeatureImportance": false
+                    },
+                    "labels": [
+                        "ADL",
+                        "FALL"
+                    ],
+                    "valuesPerAxis": 304,
+                    "windowCount": 126163,
+                    "featureCount": 912,
+                    "windowSizeMs": 3000,
+                    "windowIncreaseMs": 300,
+                    "frequency": 100,
+                    "padZeros": true,
+                    "outputConfig": {
+                        "type": "flat",
+                        "shape": {
+                            "width": 912
+                        }
+                    },
+                    "fftUsed": [],
+                    "includeEmptyLabels": false,
+                    "inputShape": [
+                        900
+                    ],
+                    "includedSamplesAreInOrder": true,
+                    "resamplingAlgorithmVersion": 2
+                }
+            }
+        ],
+        "learnBlocks": [
+            {
+                "id": 34,
+                "type": "keras",
+                "name": "Classifier",
+                "dsp": [
+                    32
+                ],
+                "title": "Classification",
+                "createdBy": "createImpulse",
+                "createdAt": "2024-10-21T17:40:21.874Z"
+            }
+        ]
+    },
+    "project": {
+        "name": "Fall_Detection_tinyml",
+        "id": 533957,
+        "owner": "Sanjana Achar",
+        "apiKey": "ei_9e8b3a4cd61f74f894374577f335c8d51a5f637b0131e731a3e9321143abfd5d",
+        "studioHost": "studio.edgeimpulse.com"
+    },
+    "sensor": "accelerometer",
+    "tfliteModels": [
+        {
+            "arenaSize": 4595,
+            "inputFrameSize": 912,
+            "inputTensor": "dense_input",
+            "outputTensor": "y_pred/Softmax:0",
+            "details": {
+                "modelType": "int8",
+                "inputs": [
+                    {
+                        "dataType": "int8",
+                        "name": "serving_default_x:0",
+                        "shape": [
+                            1,
+                            912
+                        ],
+                        "quantizationScale": 0.058026961982250214,
+                        "quantizationZeroPoint": 10
+                    }
+                ],
+                "outputs": [
+                    {
+                        "dataType": "int8",
+                        "name": "StatefulPartitionedCall:0",
+                        "shape": [
+                            1,
+                            2
+                        ],
+                        "quantizationScale": 0.00390625,
+                        "quantizationZeroPoint": -128
+                    }
+                ]
+            },
+            "modelPath": "/home/input/trained.tflite"
+        }
+    ]
+}
